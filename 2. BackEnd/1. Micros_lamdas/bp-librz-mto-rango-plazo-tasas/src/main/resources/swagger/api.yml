@@ -1,0 +1,430 @@
+swagger: "2.0"
+info:
+  version: "2024-05-03T13:19:28Z"
+  title: "#name"
+basePath: "/mto/rango-plazo-tasa/v1"
+schemes:
+  - "https"
+paths:
+  /findTermRateRangeFinal:
+    get:
+      summary: "Api para la consulta del registro de rango de plazos tasas."
+      produces:
+        - "application/json"
+      responses:
+        200:          
+          description: "Success"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ResponseFindRangoPlazoTasas"
+        400:
+          description: "Bad Request"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal Server Error"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        credentials: "arn:aws:iam::#account:role/#name"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:#account:function:#name/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"            
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+        requestTemplates:
+          application/json: |
+            #set($inputRoot = $input.path('$'))
+            #set($replacedPath = $context.resourcePath.split("/")[-1])
+            {
+              "body": $input.json('$'),
+              "headers": {
+                "spring.cloud.function.definition": "$replacedPath"
+              }
+            }
+
+
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        type: "mock"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+                method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+                method.response.header.Access-Control-Allow-Headers: "'*'"
+                method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"  
+  /saveTermRateRangeFinal:
+    post:
+      summary: "Api para crear rangos plazo tasas."
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Success"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+          schema:
+            $ref: "#/definitions/ResponseSaveRangosPlazoTasas"
+        400:
+          description: "Bad Request"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal Server Error"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        credentials: "arn:aws:iam::#account:role/#name"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:#account:function:#name/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"              
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+        requestTemplates:
+          application/json: |
+            #set($inputRoot = $input.path('$'))
+            #set($replacedPath = $context.resourcePath.split("/")[-1])
+            { 
+              "body": $input.json('$'),
+              "headers": {    
+                "spring.cloud.function.definition": "$replacedPath"
+              }
+            }
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        type: "mock"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+  /updateTermRateRangeFinal:
+    post:
+      summary: "Api para la modificar los rangos plazo tasas."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/RequestUpdateRangosPlazoTasas"
+      responses:
+        200:
+          description: "Success"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+          schema:
+            $ref: "#/definitions/ResponseRangosPlazoTasas"
+        400:
+          description: "Bad Request"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal Server Error"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        credentials: "arn:aws:iam::#account:role/#name"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:#account:function:#name/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+        requestTemplates:
+          application/json: |
+            #set($inputRoot = $input.path('$'))
+            #set($replacedPath = $context.resourcePath.split("/")[-1])
+            {
+              "body": $input.json('$'),
+              "headers": {
+                "spring.cloud.function.definition": "$replacedPath"
+              }
+            }
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        type: "mock"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+  /deleteTermRateRangeFinal:
+    post:
+      summary: "Api para eliminar un rango plazo tasas por id."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: "integer"
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/RequestDeleteRangosPlazoTasas"
+      responses:
+        200:
+          description: "Success"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+          schema:
+            $ref: "#/definitions/ResponseDeleteRangoPlazoTasas"
+        400:
+          description: "Bad Request"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal Server Error"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        credentials: "arn:aws:iam::#account:role/#name"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:#account:function:#name/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+        requestTemplates:
+          application/json: |
+            #set($inputRoot = $input.path('$'))
+            #set($replacedPath = $context.resourcePath.split("/")[-1])
+            {
+              "body": $input.json('$'),
+              "headers": {
+                "spring.cloud.function.definition": "$replacedPath"
+              }
+            }
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        type: "mock"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+  /findTermRateRangeByRangeFinal:
+    post:
+      summary: "Api para la consulta del registro de rango de plazos tasas."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/RequestFindTermRateRangeByRangeFinal"
+      responses:
+        200:
+          description: "Success"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+          schema:
+            $ref: "#/definitions/ResponseFindTermRateRangeByRangeFinal"
+        400:
+          description: "Bad Request"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal Server Error"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        credentials: "arn:aws:iam::#account:role/#name"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:#account:function:#name/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+        requestTemplates:
+          application/json: |
+            #set($inputRoot = $input.path('$'))
+            #set($replacedPath = $context.resourcePath.split("/")[-1])
+            {
+              "body": $input.json('$'),
+              "headers": {
+                "spring.cloud.function.definition": "$replacedPath"
+              }
+            }
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        type: "mock"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+definitions:
+  ResponseFindRangosPlazoTasas:
+    type: "object"
+    properties:
+      idPlazo:
+        type: "integer"
+        format: "int64"
+      descriptionPlazo:
+        type: "string"
+      estado:
+        type: "string"
+  RequestSaveRangosPlazoTasas:
+    type: "object"
+    properties:
+      idPlazo:
+        type: "integer"
+        format: "int64"
+      descriptionPlazo:
+        type: "string"
+      estado:
+        type: "string"
+
+
+  RequestDeleteRangosPlazoTasas:
+    type: "object"
+    properties:
+      idPlazo:
+        type: "integer"
+        format: "int64"
+      descriptionPlazo:
+        type: "string"
+      estado:
+        type: "string"
+
+
+  RequestFindTermRateRangeByRangeFinal:
+    type: "object"
+    properties:
+      rangoPlazo:
+        type: "string"

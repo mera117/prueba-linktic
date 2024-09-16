@@ -1,0 +1,27 @@
+<div class="p-table">
+  <!-- Header -->
+  <div class="p-table__col p-table-history__col p-table__col-gray">
+      <div class="p-table__row p-table__row-header p-table__row-header-blue">Editor</div>
+      <div class="p-table__row p-table__row-header p-table__row-header-blue">Fecha y hora</div>
+      <div class="p-table__row p-table__row-header p-table__row-header-blue">Plazo (entendido en meses)</div>
+      <div class="p-table__row p-table__row-header p-table__row-header-blue">Campo modificado</div>
+      <div class="p-table__row p-table__row-header p-table__row-header-blue">Dato Anterior</div>
+      <div class="p-table__row p-table__row-header p-table__row-header-blue">Nuevo dato</div>
+  </div>
+  <!-- Body -->
+
+  <div class="p-table__col p-table-history__col" *ngFor="let item of historico">
+      <div class="p-table__row">{{ item.usuario }} </div>
+      <div class="p-table__row">{{ item.fecha_hora }}</div>
+      <div class="p-table__row">{{ item.valorModificado.id }}</div>
+
+      <ng-container *ngFor="let modificado of item.valorModificado.cambios; let i = index">
+        <div class="p-table__row" *ngIf="i !== 0">{{item.usuario}}</div>
+        <div class="p-table__row" *ngIf="i !== 0">{{item.fecha_hora}}</div>
+      <div class="p-table__row"   *ngIf="i !== 0">{{ item.valorModificado.id }}</div>
+        <div class="p-table__row">{{ modificado.campo }}</div>
+        <div class="p-table__row">{{ modificado.valorAnterior }}</div>
+        <div class="p-table__row">{{ modificado.nuevoValor }}</div>
+      </ng-container>
+  </div>
+</div>

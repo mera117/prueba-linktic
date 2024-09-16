@@ -1,0 +1,1 @@
+INSERT INTO con_rango_plazo (id,minimo,estado,maximo,description_plazo ) VALUES(1,1,true,30,'1-30');

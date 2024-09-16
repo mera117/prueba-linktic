@@ -1,0 +1,274 @@
+
+<!-- seguros-vida-deudor.component.html -->
+<div style="overflow-y: auto; max-height: 400px;">
+  <table mat-table class="p-table p-table-principal" [dataSource]="dataSource"  class="mat-elevation-z8">
+    <!-- Define las columnas de la tabla -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID Plan</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarIdPlan">
+          {{element.id}}
+        </ng-container>
+        <ng-template #editarIdPlan>
+          <input matInput class="mat-input-element" disabled [(ngModel)]="element.id">
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nombrePlan">
+      <th mat-header-cell *matHeaderCellDef>Nombre del plan</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarNombrePlan">
+          {{element.nombre_plan}}
+        </ng-container>
+        <ng-template #editarNombrePlan>
+          <input matInput [maxlength]="100" class="mat-input-element" [(ngModel)]="element.nombre_plan"
+            [class.error]="element.errores?.nombre_plan">
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="valorPrima">
+      <th mat-header-cell *matHeaderCellDef>Valor de la Prima (mensual)</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarValorPrima">
+          {{element.valor_prima}}
+        </ng-container>
+        <ng-template #editarValorPrima>
+          <input matInput class="mat-input-element" [(ngModel)]="element.valor_prima"
+            [class.error]="element.errores?.valor_prima" (keypress)="validarNumerico($event)"
+            (blur)="formatearSeparadorMiles($event)">
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fallecimientoAccidental">
+      <th mat-header-cell *matHeaderCellDef>Fallecimiento Accidental</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarFallecimientoAccidental">
+          {{element.fallecimiento_accidental}}
+        </ng-container>
+        <ng-template #editarFallecimientoAccidental>
+          <input matInput class="mat-input-element" [(ngModel)]="element.fallecimiento_accidental"
+            [class.error]="element.errores?.fallecimiento_accidental"
+            (keypress)="validarNumerico($event)" (blur)="formatearSeparadorMiles($event)">
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="inhabilitacionTotal">
+      <th mat-header-cell *matHeaderCellDef>Inhabilitación Total y Permanente y Desmembración</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarInhabilitacionTotal">
+          {{element.inhabilitacion_total}}
+        </ng-container>
+        <ng-template #editarInhabilitacionTotal>
+          <input matInput class="mat-input-element" [(ngModel)]="element.inhabilitacion_total"
+            [class.error]="element.errores?.inhabilitacion_total" (keypress)="validarNumerico($event)"
+            (blur)="formatearSeparadorMiles($event)">
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="enfermedadesGraves">
+      <th mat-header-cell *matHeaderCellDef> Enfermedades Graves</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarEnfermedadesGraves">
+          {{element.enfermedades_graves}}
+        </ng-container>
+        <ng-template #editarEnfermedadesGraves>
+          <input matInput class="mat-input-element" [(ngModel)]="element.enfermedades_graves"
+            [class.error]="element.errores?.enfermedades_graves"
+            (keypress)="validarNumerico($event)" (blur)="formatearSeparadorMiles($event)">
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="canastaFallecimiento">
+      <th mat-header-cell *matHeaderCellDef>Canasta por fallecimiento</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarCanastaFallecimiento">
+          {{element.canasta_fallecimiento}}
+        </ng-container>
+        <ng-template #editarCanastaFallecimiento>
+          <input matInput class="mat-input-element" [(ngModel)]="element.canasta_fallecimiento"
+            [class.error]="element.errores?.canasta_fallecimiento"
+            (keypress)="validarNumerico($event)" (blur)="formatearSeparadorMiles($event)">
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="estadoPlan">
+      <th mat-header-cell *matHeaderCellDef>Estado del Plan</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarEstado">
+          {{filterStatus(element.estado_plan)}}
+        </ng-container>
+        <ng-template #editarEstado>
+          <mat-select [(ngModel)]="element.estado_plan" class="mat-input-element">
+            <mat-option *ngFor="let option of statusOptions" [value]="option.value">
+              {{option.label}}
+            </mat-option>
+          </mat-select>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="asalariado">
+      <th mat-header-cell *matHeaderCellDef> Ocupación Asalariado</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarAsalariado">
+          {{filterValid(element.asalariado)}}
+        </ng-container>
+        <ng-template #editarAsalariado>
+          <mat-select [(ngModel)]="element.asalariado" class="mat-input-element">
+            <mat-option *ngFor="let option of generalOptions" [value]="option.value">
+              {{option.label}}
+            </mat-option>
+          </mat-select>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="independiente">
+      <th mat-header-cell *matHeaderCellDef> Ocupación Independiente</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarIndependiente">
+          {{filterValid(element.independiente)}}
+        </ng-container>
+        <ng-template #editarIndependiente>
+          <mat-select [(ngModel)]="element.independiente" class="mat-input-element">
+            <mat-option *ngFor="let option of generalOptions" [value]="option.value">
+              {{option.label}}
+            </mat-option>
+          </mat-select>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="pensionado">
+      <th mat-header-cell *matHeaderCellDef> Ocupación Pensionado</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarPensionado">
+          {{filterValid(element.pensionado)}}
+        </ng-container>
+        <ng-template #editarPensionado>
+          <mat-select [(ngModel)]="element.pensionado" class="mat-input-element">
+            <mat-option *ngFor="let option of generalOptions" [value]="option.value">
+              {{option.label}}
+            </mat-option>
+          </mat-select>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="edadMinima">
+      <th mat-header-cell *matHeaderCellDef> Edad mínima (en años)</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarEdadMinima">
+          {{element.edad_minima}}
+        </ng-container>
+        <ng-template #editarEdadMinima>
+          <input matInput [maxlength]="3" class="mat-input-element" [(ngModel)]="element.edad_minima"
+          [class.error]="element.errores?.edad_minima"
+          (keypress)="validacionCamposEdad($event)">
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="edadMinimaDias">
+      <th mat-header-cell *matHeaderCellDef> Edad mínima (en días)</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarEdadMinimaDias">
+          {{element.edad_minima_dias}}
+        </ng-container>
+        <ng-template #editarEdadMinimaDias>
+          <input matInput [maxlength]="3" class="mat-input-element" [(ngModel)]="element.edad_minima_dias"
+          [class.error]="element.errores?.edad_minima_dias"
+          (keypress)="validacionCamposEdad($event)">
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="edadMaxima">
+      <th mat-header-cell *matHeaderCellDef> Edad máxima (en años)</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarEdadMaxima">
+          {{element.edad_maxima}}
+        </ng-container>
+        <ng-template #editarEdadMaxima>
+          <input matInput [maxlength]="3" class="mat-input-element" [(ngModel)]="element.edad_maxima"
+          [class.error]="element.errores?.edad_maxima"
+          (keypress)="validacionCamposEdad($event)">
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="edadMaximaDias">
+      <th mat-header-cell *matHeaderCellDef> Edad máxima (en días)</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarEdadMaximaDias">
+          {{element.edad_maxima_dias}}
+        </ng-container>
+        <ng-template #editarEdadMaximaDias>
+          <input matInput [maxlength]="3" class="mat-input-element" [(ngModel)]="element.edad_maxima_dias"
+          [class.error]="element.errores?.edad_maxima_dias"
+          (keypress)="validacionCamposEdad($event)">
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <!-- Define las otras columnas de la misma manera -->
+
+    <ng-container matColumnDef="accion">
+      <th mat-header-cell *matHeaderCellDef> Acción </th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else botonesEdicion">
+          <button mat-icon-button class="boton-editar" [disabled]="creandoFila || checked === false"
+            *ngIf="!mostrarBotonEliminar" (click)="habilitarEdicion(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </ng-container>
+        <ng-template #botonesEdicion>
+          <button mat-icon-button class="boton-guardar" *ngIf="!mostrarBotonEliminar " (click)="guardarCambios(element)"
+            [disabled]="checked === false">
+            <mat-icon>done</mat-icon>
+          </button>
+        </ng-template>
+        <button mat-icon-button class="boton-eliminar" *ngIf="mostrarBotonEliminar" (click)="eliminarFila(element)"
+          [disabled]="checked === false">
+          <mat-icon>close</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+  </table>
+</div>
+
+<div style="display: flex; justify-content: flex-end;">
+  <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true">
+  </mat-paginator>  <!-- Botón para eliminar fila -->
+  <button mat-button *ngIf="!creandoFila && !cancelarEdicionview" (click)="mostrarBotonEliminar = !mostrarBotonEliminar"
+    style="margin-right: 10px;" class="boton-accion" [disabled]="checked === false">
+    {{mostrarBotonEliminar ? 'Cancelar eliminación' : 'Eliminar fila'}}
+  </button>
+
+  <!-- Botón para agregar fila -->
+  <button mat-button *ngIf="!mostrarBotonEliminar && !cancelarEdicionview" (click)="creandoFila ? cancelarCreacion() : agregarFila()"
+    class="boton-accion" (blur)="validacionCamposEdad($event)" [disabled]="checked === false">
+    {{ creandoFila ? 'Cancelar creación' : 'Agregar fila' }}
+  </button>
+
+  <button mat-button *ngIf="cancelarEdicionview" (click)="cancelarEdicion()"  class="boton-accion">
+    Cancelar edicion
+   </button>
+</div>
+
+<div class="agreement" >
+  <app-history-table-seguros [historico]="historico" ></app-history-table-seguros>
+  <button mat-button *ngIf="!mostrarBotonEliminar && !cancelarEdicionview" (click)="exportDataToExcel()"  class="boton-accion">
+    Generar reporte
+  </button>
+</div>

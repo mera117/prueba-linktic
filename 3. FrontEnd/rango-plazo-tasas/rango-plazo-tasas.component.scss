@@ -1,0 +1,303 @@
+.row {
+  display: flex;
+  justify-content: center;
+}
+
+.center {
+  justify-content: center;
+}
+
+
+.cards {
+  width: 70%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search {
+  width: 50%;
+  //padding: 0.5em 0 0.5em 0;
+}
+
+.form {
+  font-size: large;
+  margin: auto;
+}
+
+.text {
+  font-size: x-large;
+  margin: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: none;
+}
+
+th {
+  text-align: center;
+  font-family: Roboto, "Helvetica Neue", sans-serif;;
+  color:  white;
+  width: 33%;
+  font-size: 100%;
+  padding: 10px;
+  background-color: #002850;
+  font-weight: 500 !important;
+  cursor: pointer;
+}
+
+table.mat-table thead {
+  display: table-header-group !important;
+}
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 20px;
+}
+
+.title-module {
+  color: #002850;
+}
+
+.tabs {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid #002850;
+  color: #002850;
+  background-color: #E1EFF5;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.tab.active {
+  background-color: #002850;
+  color: white;
+}
+
+.credit-info-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.info-module {
+  flex: 1;
+  min-width: 0;
+  background-color: white;
+  padding: 0 20px;
+  padding-top: 10px;
+  justify-content: start;
+  border-bottom: 0.8px solid rgba(0, 0, 0, 0.1);
+  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.info-module h3 {
+  color: #002850;
+  margin-bottom: 10px;
+}
+
+@media (min-width: 768px) {
+  .info-module {
+      flex-basis: calc(33.3333% - 20px);
+  }
+}
+
+@media (max-width: 767px) {
+  .info-module {
+      flex-basis: 100%;
+  }
+}
+
+
+.info-section {
+  flex: 1;
+  min-width: 0;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.info-section h3 {
+  color: #002850;
+  margin-bottom: 10px;
+}
+
+@media (min-width: 768px) {
+  .info-section {
+      flex-basis: calc(33.3333% - 20px);
+  }
+}
+
+@media (max-width: 767px) {
+  .info-section {
+      flex-basis: 100%;
+  }
+}
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  /* Esto ayuda a mantener fijo el ancho de las columnas */
+}
+
+.info-table th {
+  background-color: white;
+  color: #333;
+  text-align: left;
+  padding: 40px;
+  font-size: 16px;
+}
+
+.info-table td {
+  padding: 8px;
+  text-align: left;
+  vertical-align: top;
+  /* Alinea el texto al tope de la celda */
+}
+
+.info-table .attribute {
+  background-color: white;
+
+}
+
+.info-table .value {
+  background-color: #ffffff;
+  font-weight: bold;
+}
+
+.expantionPanelTitle
+{
+  color: #002850;
+  font-weight: bold;
+}
+
+.mat-column-select{
+  flex: 0 0 50px;
+}
+
+.input-size {
+  width: 80%;
+}
+
+.input-size-list {
+  width: 80%;
+}
+
+::ng-deep.swal2-confirm {
+  background-color: #ffff !important;
+  color: #000 !important;
+  margin-right: 10px !important;
+  border-radius: 2rem;
+  border: 1px solid #000 !important;
+}
+
+
+/* En tu archivo de estilos CSS */
+.mat-column-id_plazo,
+.mat-column-description_plazo,
+.mat-column-status_id,
+.mat-column-description_status,
+.mat-column-accion {
+  width: 100% !important; /* Cambia este valor según sea necesario */
+  padding: 5px;
+}
+
+
+:host ::ng-deep .mat-input-element {
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  padding: 8px !important;
+  width: 80% !important;
+}
+
+:host ::ng-deep .mat-input-element:focus {
+  width: 80% !important;
+  outline: none !important;
+  border-color: #6c63ff !important;
+  box-shadow: 0 0 5px rgba(108, 99, 255, 0.5) !important;
+}
+
+.boton-editar, .boton-guardar, .boton-eliminar{
+  background-color: #fff; /* Color de fondo del botón */
+  border: 1px solid #ccc; /* Borde del botón */
+  border-radius: 4px; /* Bordes redondeados */
+  padding: 8px; /* Espaciado interno */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para efecto de relieve */
+  transition: box-shadow 0.3s ease; /* Transición suave para la sombra */
+  display: flex !important; /* Utiliza flexbox */
+  justify-content: center !important; /* Centra horizontalmente */
+  align-items: center !important; /* Centra verticalmente */
+  /* Estilos al pasar el ratón sobre el botón */
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Aumenta la sombra al pasar el ratón */
+  }
+}
+
+
+.boton-accion {
+  font-size: 16px; /* Tamaño de fuente */
+  padding: 2px 20px; /* Espaciado interno */
+  background-color: transparent; /* Fondo transparente */
+  color: #002850; /* Color de texto */
+  border: 2px solid #002850; /* Borde */
+  border-radius: 20px; /* Radio de borde */
+  transition: background-color 0.3s, color 0.3s; /* Transición suave */
+  margin-top: 5px;
+
+  /* Estilos al pasar el ratón sobre el botón */
+  &:hover {
+    background-color: #002850; /* Cambio de color de fondo */
+    color: #fff; /* Cambio de color de texto */
+  }
+}
+
+
+
+@import '../../../../../../theme/variables/variables';
+.p-table-principal {
+    &__col {
+        grid-template-columns: repeat(1, 3fr) repeat(1, 2fr) repeat(2, 1fr);
+    }
+}
+.agreement{
+    width: 100%;
+    margin-top: 30px;
+    &__btns{
+        width: 100%;
+        text-align: right;
+    }
+}
+
+td{
+  text-align: center;
+}
+
+.acciones{
+  display: flex;
+  justify-content: center !important
+  }
+
+  .error {
+    border: 1px solid red !important;
+    background-color: #ffe6e6 !important;
+  }

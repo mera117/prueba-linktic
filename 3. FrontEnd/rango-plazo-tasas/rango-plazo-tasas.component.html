@@ -1,0 +1,105 @@
+<!-- seguros-vida-deudor.component.html -->
+
+<table mat-table class="p-table p-table-principal" [dataSource]="dataSource" >
+
+    <!-- Define las columnas de la tabla -->
+    <ng-container matColumnDef="descriptionPlazo">
+      <th mat-header-cell *matHeaderCellDef>Plazo (entendido en Meses)</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarDescriptionPlazo">
+          {{element.description_plazo}}
+        </ng-container>
+        <ng-template #editarDescriptionPlazo>
+          <input matInput class="mat-input-element" [(ngModel)]="element.description_plazo"
+          [class.error]="errores?.description_plazo">
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="descriptionStatus">
+      <th mat-header-cell *matHeaderCellDef>Estado</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="!element.editando; else editarDescriptionStatus">
+          {{element.description_status}}
+        </ng-container>
+        <ng-template #editarDescriptionStatus>
+          <mat-select [(ngModel)]="element.status_id" class="mat-input-element" >
+            <mat-option *ngFor="let option of statusOptions" [value]="option.value">
+              {{ option.label }}
+            </mat-option>
+        </mat-select>
+        </ng-template>
+      </td>
+    </ng-container>
+
+ <!-- Define las otras columnas de la misma manera -->
+
+ <ng-container matColumnDef="accion">
+    <th mat-header-cell *matHeaderCellDef> Acción </th>
+    <td mat-cell *matCellDef="let element"  style="display: flex;  justify-content: center; align-items: center;">
+      <ng-container *ngIf="!element.editando; else botonesEdicion">
+        <button mat-icon-button  class="boton-editar" [disabled]="creandoFila"  *ngIf="!mostrarBotonEliminar"(click)="habilitarEdicion(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </ng-container>
+      <ng-template #botonesEdicion>
+        <button mat-icon-button class="boton-guardar"  *ngIf="!mostrarBotonEliminar" (click)="guardarCambios(element)">
+          <mat-icon>done</mat-icon>
+        </button>
+      </ng-template>
+
+      <button mat-icon-button class="boton-eliminar"  *ngIf="mostrarBotonEliminar" (click)="eliminarFila(element)">
+        <mat-icon>close</mat-icon>
+      </button>
+
+
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+</table>
+<div style="display: flex; justify-content: flex-end;">
+  <!-- Botón para eliminar fila -->
+  <button mat-button *ngIf="!creandoFila && !cancelarEdicionview" (click)="mostrarBotonEliminar ? cancelarEliminacion() : mostrarEliminar()" style="margin-right: 10px;"
+  class="boton-accion" >
+    {{mostrarBotonEliminar ? 'Cancelar eliminación' : 'Eliminar fila'}}
+  </button>
+
+  <!-- Botón para agregar fila -->
+  <button mat-button *ngIf="!mostrarBotonEliminar && !cancelarEdicionview" (click)="creandoFila ? cancelarCreacion() : agregarFila()"  class="boton-accion">
+    {{ creandoFila ? 'Cancelar creación' : 'Agregar fila' }}
+  </button>
+  <button mat-button *ngIf="cancelarEdicionview" (click)="cancelarEdicion()"  class="boton-accion">
+    Cancelar edicion
+   </button>
+</div>
+
+<div class="history">
+  <div class="history__header">
+      <h3 class="history__subtitle">Historial de modificaciones</h3>
+  </div> 
+  <app-dynamic-logs-table
+  [list]="paginateLogs"
+  [completeList]="logs"
+  [isLoading]="isLogsLoading"
+  [componente]="'usury'"
+  [hasFilter]=false
+  [reportName]="reportName"
+  [excludeviewColumns]="['id']"
+  ></app-dynamic-logs-table>
+  <app-paginator
+  [paginator]="paginator"
+  (onChangePage)="changePage($event)"
+  ></app-paginator>
+</div>
+
+
+<!--
+<div class="agreement" *ngIf="historico">
+  <app-history-table-seguros [historico]="historico" [cell]="'Plazo (entendido en meses)'"  ></app-history-table-seguros >
+    <button mat-button *ngIf="!mostrarBotonEliminar && !cancelarEdicionview" (click)="exportDataToExcel()"  class="boton-accion">
+      Generar reporte
+    </button>
+</div>
+-->

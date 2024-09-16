@@ -1,0 +1,13 @@
+pool:
+  vmImage: 'ubuntu-latest'
+
+resources:
+  repositories:
+    - repository: self
+    - repository: templates
+      type: git
+      name: DevOps/common-pipeline-template-eks
+      ref: refs/heads/master
+
+extends:
+  template: templates/javaTerraformTemplate.yml@templates

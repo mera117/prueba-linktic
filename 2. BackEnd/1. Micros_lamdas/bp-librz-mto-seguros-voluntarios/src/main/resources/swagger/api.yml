@@ -1,0 +1,446 @@
+swagger: "2.0"
+info:
+  version: "2024-05-03T13:19:28Z"
+  title: "#name"
+basePath: "/mto/seguros-voluntarios/v1"
+schemes:
+  - "https"
+paths:
+  /findVoluntaryInsuranceFinal:
+    get:
+      summary: "Api para la consulta del registro de umbral para compra de cartera."
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ResponseFindSegurosVoluntarios"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        400:
+          description: "Bad Request"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal Server Error"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        credentials: "arn:aws:iam::#account:role/#name"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:#account:function:#name/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: |
+              #set($inputRoot = $input.path('$'))
+              #set($replacedPath = $context.resourcePath.split("/")[-1])
+              {
+                "headers": {
+                  "spring.cloud.function.definition": "$replacedPath"
+                }
+              }
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        type: "mock"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+  /saveVoluntaryInsuranceFinal:
+    post:
+      summary: "Api para la consulta del umbral para compra de cartera vigente."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/RequestCrearTipoContrato"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ResponseSaveSegurosVoluntarios"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        400:
+          description: "Bad Request"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal Server Error"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        credentials: "arn:aws:iam::#account:role/#name"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:#account:function:#name/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+        requestTemplates:
+          application/json: |
+            #set($inputRoot = $input.path('$'))
+            #set($replacedPath = $context.resourcePath.split("/")[-1])
+            { 
+              "body": $input.json('$'),
+              "headers": {    
+                "spring.cloud.function.definition": "$replacedPath"
+              }
+            }
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        type: "mock"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+
+  /updateVoluntaryInsuranceFinal:
+    post:
+      summary: "Api para la crear nuevo registro de umbral para compra de cartera."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/RequestUpdateSegurosVoluntarios"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ResponseUmbralCompraCartera"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        400:
+          description: "Bad Request"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal Server Error"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        credentials: "arn:aws:iam::#account:role/#name"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:#account:function:#name/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+        requestTemplates:
+          application/json: |
+            #set($inputRoot = $input.path('$'))
+            #set($replacedPath = $context.resourcePath.split("/")[-1])
+            {
+              "body": $input.json('$'),
+              "headers": {
+                "spring.cloud.function.definition": "$replacedPath"
+              }
+            }
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        type: "mock"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+  /deleteVoluntaryInsuranceFinal:
+    post:
+      summary: "Api para la actualizar algun registro de umbral para compra de cartera por ID."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: "integer"
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/RequestDeleteSegurosVoluntarios"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ResponseDeleteSegurosVoluntarios"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        400:
+          description: "Bad Request"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal Server Error"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        credentials: "arn:aws:iam::#account:role/#name"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:#account:function:#name/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+        requestTemplates:
+          application/json: |
+            #set($inputRoot = $input.path('$'))
+            #set($replacedPath = $context.resourcePath.split("/")[-1])
+            {
+              "body": $input.json('$'),
+              "headers": {
+                "spring.cloud.function.definition": "$replacedPath"
+              }
+            }
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        type: "mock"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+
+  /updateStatusVoluntaryInsuranceFinal:
+    post:
+      summary: "Api para Modificar estado al eliminar."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/RequestUpdateStatusSegVol"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ResponseUpdateStatusSegVol"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        400:
+          description: "Bad Request"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal Server Error"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        credentials: "arn:aws:iam::#account:role/#name"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:#account:function:#name/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+        requestTemplates:
+          application/json: |
+            #set($inputRoot = $input.path('$'))
+            #set($replacedPath = $context.resourcePath.split("/")[-1])
+            {
+              "body": $input.json('$'),
+              "headers": {
+                "spring.cloud.function.definition": "$replacedPath"
+              }
+            }
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        type: "mock"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+
+definitions:
+  ResponseFindSegurosVoluntarios:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      umbral:
+        type: "string"
+      estado:
+        type: "string"
+      fechaVigenciaInicial:
+        type: "string"
+      creadoPor:
+        type: "string"
+      fechaCreacion:
+        type: "string"
+      actualizadoPor:
+        type: "string"
+      fechaActualizacion:
+        type: "string"
+  RequestSaveSegurosVoluntarios:
+    type: "object"
+    required:
+      - creadoPor
+    properties:
+      umbral:
+        type: "string"
+      estado:
+        type: "string"
+      fechaVigenciaInicial:
+        type: "string"
+      creadoPor:
+        type: "string"
+
+  RequestDeleteSegurosVoluntarios:
+    type: "object"
+    required:
+      - actualizadoPor
+    properties:
+      umbral:
+        type: "string"
+      estado:
+        type: "string"
+      fechaVigenciaInicial:
+        type: "string"
+      actualizadoPor:
+        type: "string"
